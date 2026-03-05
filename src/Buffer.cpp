@@ -42,13 +42,13 @@ bool Buffer::consumir(int tipo, int& valor) {
     std::unique_lock<std::mutex> lock(mtx_);
 
     // Espera hasta que: haya un elemento compatible con este consumidor,
-    // o la producción haya terminado y el buffer esté vacío.
+    // o la producción haya terminado y no haya elementos compatibles para este tipo.
     noVacio_.wait(lock, [this, tipo]() {
-        return hayElementoParaTipo(tipo) || (produccionFinalizada_ && buffer_.empty());
+        return hayElementoParaTipo(tipo) || (produccionFinalizada_ && !hayElementoParaTipo(tipo));
     });
 
     // Si la producción terminó y no quedan elementos compatibles, salimos
-    if (buffer_.empty() && produccionFinalizada_) {
+    if (produccionFinalizada_ && !hayElementoParaTipo(tipo)) {
         return false;
     }
 

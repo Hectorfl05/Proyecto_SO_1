@@ -44,7 +44,7 @@ void Productor::operator()() {
                   << "  | Buffer: " << buffer_.size() << "/" << buffer_.capacidad() << "\n";
 
         // Pequeña pausa para que la animación sea visible en tiempo real
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     archivo.close();
